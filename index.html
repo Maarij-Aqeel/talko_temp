@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tuesday Talko – AI Feedback</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎙️ Tuesday Talko</h1>
+      <p class="subtitle">Record or upload your audio and get instant English feedback!</p>
+    </header>
+
+    <!-- Mobile Landing (replaces record UI on mobile) -->
+    <section id="mobileCta" class="mobile-cta" hidden>
+      <p class="mobile-cta-desc">Speak for 30–60 seconds on any topic.<br>Get instant AI feedback on your English.</p>
+      <a id="playNowLink" href="https://talko.wordbuddyai.com?src=app" target="_self" class="btn btn-play-now">
+        🎙️ Play Now!
+      </a>
+      <div class="divider"><span>or upload to get scored</span></div>
+      <div class="upload-area">
+        <button id="mobileUploadBtn" class="btn btn-upload" type="button">📁 Upload Audio File</button>
+        <span id="mobileFileName" class="file-name"></span>
+      </div>
+    </section>
+
+    <!-- Audio Input Section -->
+    <section class="input-section">
+      <div class="record-area">
+        <button id="recordBtn" class="btn btn-record" aria-label="Record audio">
+          <span class="record-icon"></span>
+          <span class="record-label">Tap to Record</span>
+        </button>
+        <div id="timer" class="timer" hidden>0:00</div>
+      </div>
+
+      <div class="divider"><span>or</span></div>
+
+      <div class="upload-area">
+        <label class="btn btn-upload" for="fileInput">
+          📁 Upload Audio File
+        </label>
+        <input type="file" id="fileInput" accept="audio/*" hidden />
+        <span id="fileName" class="file-name"></span>
+      </div>
+    </section>
+
+    <!-- Audio Playback -->
+    <section id="playbackSection" class="playback-section" hidden>
+      <audio id="audioPlayer" controls></audio>
+      <div class="playback-actions">
+        <button id="submitBtn" class="btn btn-submit">Get Feedback ✨</button>
+        <button id="reRecordBtn" class="btn btn-reset">🔄 Re-record</button>
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <section id="loadingSection" class="loading-section" hidden>
+      <div class="spinner"></div>
+      <p>Listening to your audio and preparing feedback...</p>
+    </section>
+
+    <!-- Feedback Display -->
+    <section id="feedbackSection" class="feedback-section" hidden>
+      <!-- Score Card -->
+      <div id="scoreCard" class="card score-card">
+        <div class="score-card-top">
+          <div id="scoreCircle" class="score-circle">
+            <span id="scoreNumber" class="score-number"></span>
+            <span class="score-denom">/100</span>
+          </div>
+          <p id="scoreLabel" class="score-label"></p>
+        </div>
+        <div class="sub-scores">
+          <div class="sub-score-row">
+            <span class="sub-score-name">Grammar</span>
+            <div class="sub-score-bar-wrap"><div id="grammarBar" class="sub-score-bar"></div></div>
+            <span id="grammarValue" class="sub-score-value"></span>
+          </div>
+          <div class="sub-score-row">
+            <span class="sub-score-name">Vocabulary</span>
+            <div class="sub-score-bar-wrap"><div id="vocabularyBar" class="sub-score-bar"></div></div>
+            <span id="vocabularyValue" class="sub-score-value"></span>
+          </div>
+          <div class="sub-score-row">
+            <span class="sub-score-name">Pronunciation</span>
+            <div class="sub-score-bar-wrap"><div id="pronunciationBar" class="sub-score-bar"></div></div>
+            <span id="pronunciationValue" class="sub-score-value"></span>
+          </div>
+          <div class="sub-score-row">
+            <span class="sub-score-name">Fluency</span>
+            <div class="sub-score-bar-wrap"><div id="fluencyBar" class="sub-score-bar"></div></div>
+            <span id="fluencyValue" class="sub-score-value"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transcript -->
+      <div id="transcriptCard" class="card transcript-card">
+        <h3>📝 What we heard</h3>
+        <p id="transcriptText"></p>
+      </div>
+
+      <!-- Fixes -->
+      <div id="fix1Card" class="card fix-card">
+        <span class="card-badge badge-fix">Simple Fix</span>
+        <h3 id="fix1Title"></h3>
+        <div class="fix-content">
+          <p class="fix-label">The Fix:</p>
+          <p id="fix1Fix" class="fix-text"></p>
+        </div>
+        <p id="fix1Note" class="tutor-note"></p>
+      </div>
+
+      <div id="fix2Card" class="card fix-card">
+        <span class="card-badge badge-fix">Simple Fix</span>
+        <h3 id="fix2Title"></h3>
+        <div class="fix-content">
+          <p class="fix-label">The Fix:</p>
+          <p id="fix2Fix" class="fix-text"></p>
+        </div>
+        <p id="fix2Note" class="tutor-note"></p>
+      </div>
+
+      <!-- Native Upgrade -->
+      <div id="upgradeCard" class="card upgrade-card">
+        <span class="card-badge badge-upgrade">Native Upgrade 🚀</span>
+        <h3 id="upgradeTitle"></h3>
+        <div class="fix-content">
+          <p class="fix-label">Native Upgrade:</p>
+          <p id="upgradeFix" class="fix-text"></p>
+        </div>
+        <p id="upgradeNote" class="tutor-note"></p>
+      </div>
+
+      <!-- Pronunciation Fix -->
+      <div id="pronCard" class="card pron-card" hidden>
+        <span class="card-badge badge-pron">Pronunciation 🗣️</span>
+        <h3 id="pronTitle"></h3>
+        <div class="fix-content">
+          <p class="fix-label">Say it like this:</p>
+          <p id="pronFix" class="fix-text"></p>
+        </div>
+        <p id="pronNote" class="tutor-note"></p>
+      </div>
+
+      <!-- Share Nudge -->
+      <div id="shareNudge" class="share-nudge">
+        <p class="nudge-text">🏆 Post your score in the community! Members who share get more support and feedback.</p>
+        <button id="nudgeCopyBtn" class="btn btn-nudge-copy">📋 Copy & Share</button>
+        <p id="nudgeConfirm" class="nudge-confirm" hidden></p>
+      </div>
+
+      <!-- Share + Try Again -->
+      <button id="shareBtn" class="btn btn-share">🌟 Share Your Progress</button>
+      <button id="resetBtn" class="btn btn-reset">🎙️ Try Another Recording</button>
+    </section>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal-overlay" hidden>
+      <div class="modal">
+        <button id="modalCloseBtn" class="modal-close" aria-label="Close">&times;</button>
+        <h2>Share Your Progress!</h2>
+        <p class="modal-subtitle">Post this in the community!</p>
+        <div id="sharePreviewWrap" class="share-preview-wrap">
+          <p id="sharePreviewSpinner" class="share-preview-spinner">⏳ Generating preview...</p>
+          <img id="sharePreviewImg" class="share-preview-img" alt="Progress card" hidden />
+        </div>
+        <div class="share-img-actions">
+          <button id="copyImgBtn" class="btn btn-modal-action">📋 Copy Text</button>
+          <button id="downloadImgBtn" class="btn btn-modal-action btn-modal-primary">⬇️ Download</button>
+        </div>
+        <button id="downloadAudioBtn" class="btn btn-modal-action btn-modal-audio">🎵 Download Audio</button>
+        <p id="shareConfirm" class="copy-confirm" hidden></p>
+      </div>
+    </div>
+
+    <!-- Share Card (off-screen, captured by html2canvas) -->
+    <div id="shareCard" class="share-card" aria-hidden="true">
+      <div class="sc-header">
+        <span class="sc-logo">🎙️ Tuesday Talko</span>
+        <span class="sc-tagline">AI English Speaking Feedback</span>
+      </div>
+      <div class="sc-score-wrap">
+        <div id="scScoreCircle" class="sc-score-circle">
+          <span id="scScoreNumber" class="sc-score-number"></span>
+          <span class="sc-score-denom">/100</span>
+        </div>
+        <p id="scScoreLabel" class="sc-score-label"></p>
+      </div>
+      <div class="sc-sub-scores">
+        <div class="sc-sub-row">
+          <span class="sc-sub-name">Grammar</span>
+          <div class="sc-sub-bar-wrap"><div id="scGrammarBar" class="sc-sub-bar"></div></div>
+          <span id="scGrammarValue" class="sc-sub-value"></span>
+        </div>
+        <div class="sc-sub-row">
+          <span class="sc-sub-name">Vocabulary</span>
+          <div class="sc-sub-bar-wrap"><div id="scVocabularyBar" class="sc-sub-bar"></div></div>
+          <span id="scVocabularyValue" class="sc-sub-value"></span>
+        </div>
+        <div class="sc-sub-row">
+          <span class="sc-sub-name">Pronunciation</span>
+          <div class="sc-sub-bar-wrap"><div id="scPronunciationBar" class="sc-sub-bar"></div></div>
+          <span id="scPronunciationValue" class="sc-sub-value"></span>
+        </div>
+        <div class="sc-sub-row">
+          <span class="sc-sub-name">Fluency</span>
+          <div class="sc-sub-bar-wrap"><div id="scFluencyBar" class="sc-sub-bar"></div></div>
+          <span id="scFluencyValue" class="sc-sub-value"></span>
+        </div>
+      </div>
+      <div class="sc-summary">
+        <p class="sc-summary-title">My Feedback Summary</p>
+        <div class="sc-summary-item">
+          <span class="sc-item-badge sc-badge-fix">Fix 1</span>
+          <div class="sc-item-body">
+            <p id="scFix1Title" class="sc-item-title"></p>
+            <p id="scFix1Fix" class="sc-item-fix"></p>
+          </div>
+        </div>
+        <div class="sc-summary-item">
+          <span class="sc-item-badge sc-badge-fix">Fix 2</span>
+          <div class="sc-item-body">
+            <p id="scFix2Title" class="sc-item-title"></p>
+            <p id="scFix2Fix" class="sc-item-fix"></p>
+          </div>
+        </div>
+        <div class="sc-summary-item">
+          <span class="sc-item-badge sc-badge-upgrade">Upgrade 🚀</span>
+          <div class="sc-item-body">
+            <p id="scUpgradeTitle" class="sc-item-title"></p>
+            <p id="scUpgradeFix" class="sc-item-fix sc-item-fix--upgrade"></p>
+          </div>
+        </div>
+        <div id="scPronRow" class="sc-summary-item">
+          <span class="sc-item-badge sc-badge-pron">Pronunciation 🗣️</span>
+          <div class="sc-item-body">
+            <p id="scPronTitle" class="sc-item-title"></p>
+            <p id="scPronFix" class="sc-item-fix sc-item-fix--pron"></p>
+          </div>
+        </div>
+      </div>
+      <div class="sc-footer">
+Practice English with WordBuddy.ai
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <section id="errorSection" class="error-section" hidden>
+      <p id="errorText" class="error-text"></p>
+      <a id="openInBrowserBtn" class="btn btn-open-browser" href="https://talko.wordbuddyai.com" target="_blank" hidden>
+        🎙️ Open in Browser
+      </a>
+      <button id="errorResetBtn" class="btn btn-reset">Try Again</button>
+    </section>
+  </div>
+
+  <script src="/lame.min.js"></script>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>

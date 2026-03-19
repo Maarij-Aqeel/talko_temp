@@ -1,0 +1,20 @@
+{
+  "name": "tuesday-talko",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "@vercel/analytics": "^2.0.1",
+    "html2canvas": "^1.4.1",
+    "lamejs": "^1.2.1"
+  },
+  "devDependencies": {
+    "vite": "^6.2.0"
+  }
+}
