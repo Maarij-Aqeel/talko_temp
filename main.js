@@ -36,14 +36,6 @@ if (isMobile && !cameFromApp) {
   mobileCta.hidden = false;
   inputSection.style.display = 'none';
 
-  // Forward the access key to the Play Now link so the middleware doesn't block it
-  const currentKey = new URLSearchParams(window.location.search).get('key');
-  if (currentKey) {
-    const playLink = document.getElementById('playNowLink');
-    const base = new URL(playLink.href);
-    base.searchParams.set('key', currentKey);
-    playLink.href = base.toString();
-  }
 }
 
 // Wire mobile upload button to the hidden file input
@@ -183,10 +175,10 @@ submitBtn.addEventListener('click', async () => {
     const rawType = audioBlob.type
       || (audioBlob.name?.endsWith('.mp3') ? 'audio/mpeg'
         : audioBlob.name?.endsWith('.wav') ? 'audio/wav'
-        : audioBlob.name?.endsWith('.m4a') ? 'audio/mp4'
-        : audioBlob.name?.endsWith('.ogg') ? 'audio/ogg'
-        : audioBlob.name?.endsWith('.flac') ? 'audio/flac'
-        : 'audio/webm');
+          : audioBlob.name?.endsWith('.m4a') ? 'audio/mp4'
+            : audioBlob.name?.endsWith('.ogg') ? 'audio/ogg'
+              : audioBlob.name?.endsWith('.flac') ? 'audio/flac'
+                : 'audio/webm');
     const MIME_MAP = {
       'audio/x-m4a': 'audio/mp4',
       'audio/x-wav': 'audio/wav',
@@ -276,20 +268,20 @@ function renderFeedback(data) {
 }
 
 const SUB_SCORE_FIELDS = [
-  { key: 'grammar',      label: 'grammar' },
-  { key: 'vocabulary',   label: 'vocabulary' },
-  { key: 'pronunciation',label: 'pronunciation' },
-  { key: 'fluency',      label: 'fluency' },
+  { key: 'grammar', label: 'grammar' },
+  { key: 'vocabulary', label: 'vocabulary' },
+  { key: 'pronunciation', label: 'pronunciation' },
+  { key: 'fluency', label: 'fluency' },
 ];
 
 function renderSubScores(scores, prefix = '') {
   SUB_SCORE_FIELDS.forEach(({ key, label }) => {
     const val = typeof scores[key] === 'number' ? scores[key] : null;
     const capKey = key.charAt(0).toUpperCase() + key.slice(1);
-    const barId  = prefix ? `sc${capKey}Bar`   : `${label}Bar`;
-    const valId  = prefix ? `sc${capKey}Value` : `${label}Value`;
-    const barEl  = document.getElementById(barId);
-    const valEl  = document.getElementById(valId);
+    const barId = prefix ? `sc${capKey}Bar` : `${label}Bar`;
+    const valId = prefix ? `sc${capKey}Value` : `${label}Value`;
+    const barEl = document.getElementById(barId);
+    const valEl = document.getElementById(valId);
     if (barEl && val !== null) {
       barEl.style.width = `${val}%`;
       barEl.className = `sub-score-bar ${getScoreTier(val)}`;
@@ -502,15 +494,15 @@ function populateShareCard(data) {
 
   // Summary report
   document.getElementById('scFix1Title').textContent = data.fixes?.[0]?.title || '';
-  document.getElementById('scFix1Fix').textContent  = data.fixes?.[0]?.fix   || '';
+  document.getElementById('scFix1Fix').textContent = data.fixes?.[0]?.fix || '';
   document.getElementById('scFix2Title').textContent = data.fixes?.[1]?.title || '';
-  document.getElementById('scFix2Fix').textContent  = data.fixes?.[1]?.fix   || '';
+  document.getElementById('scFix2Fix').textContent = data.fixes?.[1]?.fix || '';
   document.getElementById('scUpgradeTitle').textContent = data.upgrade?.title || '';
-  document.getElementById('scUpgradeFix').textContent  = data.upgrade?.fix   || '';
+  document.getElementById('scUpgradeFix').textContent = data.upgrade?.fix || '';
   const pronRow = document.getElementById('scPronRow');
   if (data.pronunciation) {
     document.getElementById('scPronTitle').textContent = data.pronunciation.title || '';
-    document.getElementById('scPronFix').textContent  = data.pronunciation.fix   || '';
+    document.getElementById('scPronFix').textContent = data.pronunciation.fix || '';
     pronRow.style.display = '';
   } else {
     pronRow.style.display = 'none';
@@ -561,9 +553,9 @@ downloadAudioBtn.addEventListener('click', async () => {
   try {
     // Mobile: use Web Share API (fixes iOS <a download> limitation)
     const ext = audioBlob.type.includes('mp4') || audioBlob.type.includes('m4a') ? 'm4a'
-              : audioBlob.type.includes('mpeg') ? 'mp3'
-              : audioBlob.type.includes('wav')  ? 'wav'
-              : 'webm';
+      : audioBlob.type.includes('mpeg') ? 'mp3'
+        : audioBlob.type.includes('wav') ? 'wav'
+          : 'webm';
     const audioFile = new File([audioBlob], `tuesday-talko-recording.${ext}`, { type: audioBlob.type });
     if (navigator.canShare?.({ files: [audioFile] })) {
       await navigator.share({ files: [audioFile], title: 'My Tuesday Talko Recording' });
