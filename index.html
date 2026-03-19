@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tuesday Talko – AI Feedback</title>
   <link rel="stylesheet" href="/style.css" />
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -16,7 +18,8 @@
     <!-- Mobile Landing (replaces record UI on mobile) -->
     <section id="mobileCta" class="mobile-cta" hidden>
       <p class="mobile-cta-desc">Speak for 30–60 seconds on any topic.<br>Get instant AI feedback on your English.</p>
-      <a id="playNowLink" href="https://talko.wordbuddyai.com?src=app" target="_self" class="btn btn-play-now">
+      <a id="playNowLink" href="https://talko-temp.vercel.app/" target="_blank" class="btn btn-play-now"
+        rel="noopener noreferrer">
         🎙️ Play Now!
       </a>
       <div class="divider"><span>or upload to get scored</span></div>
@@ -76,22 +79,30 @@
         <div class="sub-scores">
           <div class="sub-score-row">
             <span class="sub-score-name">Grammar</span>
-            <div class="sub-score-bar-wrap"><div id="grammarBar" class="sub-score-bar"></div></div>
+            <div class="sub-score-bar-wrap">
+              <div id="grammarBar" class="sub-score-bar"></div>
+            </div>
             <span id="grammarValue" class="sub-score-value"></span>
           </div>
           <div class="sub-score-row">
             <span class="sub-score-name">Vocabulary</span>
-            <div class="sub-score-bar-wrap"><div id="vocabularyBar" class="sub-score-bar"></div></div>
+            <div class="sub-score-bar-wrap">
+              <div id="vocabularyBar" class="sub-score-bar"></div>
+            </div>
             <span id="vocabularyValue" class="sub-score-value"></span>
           </div>
           <div class="sub-score-row">
             <span class="sub-score-name">Pronunciation</span>
-            <div class="sub-score-bar-wrap"><div id="pronunciationBar" class="sub-score-bar"></div></div>
+            <div class="sub-score-bar-wrap">
+              <div id="pronunciationBar" class="sub-score-bar"></div>
+            </div>
             <span id="pronunciationValue" class="sub-score-value"></span>
           </div>
           <div class="sub-score-row">
             <span class="sub-score-name">Fluency</span>
-            <div class="sub-score-bar-wrap"><div id="fluencyBar" class="sub-score-bar"></div></div>
+            <div class="sub-score-bar-wrap">
+              <div id="fluencyBar" class="sub-score-bar"></div>
+            </div>
             <span id="fluencyValue" class="sub-score-value"></span>
           </div>
         </div>
@@ -193,22 +204,30 @@
       <div class="sc-sub-scores">
         <div class="sc-sub-row">
           <span class="sc-sub-name">Grammar</span>
-          <div class="sc-sub-bar-wrap"><div id="scGrammarBar" class="sc-sub-bar"></div></div>
+          <div class="sc-sub-bar-wrap">
+            <div id="scGrammarBar" class="sc-sub-bar"></div>
+          </div>
           <span id="scGrammarValue" class="sc-sub-value"></span>
         </div>
         <div class="sc-sub-row">
           <span class="sc-sub-name">Vocabulary</span>
-          <div class="sc-sub-bar-wrap"><div id="scVocabularyBar" class="sc-sub-bar"></div></div>
+          <div class="sc-sub-bar-wrap">
+            <div id="scVocabularyBar" class="sc-sub-bar"></div>
+          </div>
           <span id="scVocabularyValue" class="sc-sub-value"></span>
         </div>
         <div class="sc-sub-row">
           <span class="sc-sub-name">Pronunciation</span>
-          <div class="sc-sub-bar-wrap"><div id="scPronunciationBar" class="sc-sub-bar"></div></div>
+          <div class="sc-sub-bar-wrap">
+            <div id="scPronunciationBar" class="sc-sub-bar"></div>
+          </div>
           <span id="scPronunciationValue" class="sc-sub-value"></span>
         </div>
         <div class="sc-sub-row">
           <span class="sc-sub-name">Fluency</span>
-          <div class="sc-sub-bar-wrap"><div id="scFluencyBar" class="sc-sub-bar"></div></div>
+          <div class="sc-sub-bar-wrap">
+            <div id="scFluencyBar" class="sc-sub-bar"></div>
+          </div>
           <span id="scFluencyValue" class="sc-sub-value"></span>
         </div>
       </div>
@@ -244,14 +263,15 @@
         </div>
       </div>
       <div class="sc-footer">
-Practice English with WordBuddy.ai
+        Practice English with WordBuddy.ai
       </div>
     </div>
 
     <!-- Error State -->
     <section id="errorSection" class="error-section" hidden>
       <p id="errorText" class="error-text"></p>
-      <a id="openInBrowserBtn" class="btn btn-open-browser" href="https://talko.wordbuddyai.com" target="_blank" hidden>
+      <a id="openInBrowserBtn" class="btn btn-open-browser" href="https://talko-temp.vercel.app/" target="_blank"
+        rel="noopener noreferrer" hidden>
         🎙️ Open in Browser
       </a>
       <button id="errorResetBtn" class="btn btn-reset">Try Again</button>
@@ -261,4 +281,5 @@ Practice English with WordBuddy.ai
   <script src="/lame.min.js"></script>
   <script type="module" src="/main.js"></script>
 </body>
+
 </html>
