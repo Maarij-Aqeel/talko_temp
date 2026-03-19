@@ -1,235 +1,332 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 export default function Home() {
+  // --- UI State ---
+  const [appState, setAppState] = useState('input'); // 'input', 'playback', 'loading', 'feedback', 'error'
+  const [errorMessage, setErrorMessage] = useState('');
+  
+  // --- Recording State ---
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingSeconds, setRecordingSeconds] = useState(0);
+  
+  // --- Audio & Feedback Data ---
+  const [audioBlob, setAudioBlob] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [feedbackData, setFeedbackData] = useState(null);
+
+  // --- Refs for MediaRecorder ---
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
+  const timerIntervalRef = useRef(null);
+
+  const MAX_DURATION_SEC = 180; // 3 minutes
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => clearInterval(timerIntervalRef.current);
+  }, []);
+
+  // Format timer
+  const formatTime = (totalSeconds) => {
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
+
+  // ==========================================
+  // 1. RECORDING LOGIC
+  // ==========================================
+  const toggleRecording = async () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      await startRecording();
+    }
+  };
+
+  const startRecording = async () => {
+    try {
+      if (!navigator.mediaDevices?.getUserMedia) {
+        throw new Error('Microphone access is not supported in this browser.');
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        stream.getTracks().forEach((t) => t.stop());
+        if (recordingSeconds < 2) {
+          showError('Recording too short. Please speak for at least a few seconds.');
+          return;
+        }
+        const blob = new Blob(audioChunksRef.current, { type: mediaRecorder.mimeType || 'audio/webm' });
+        setAudioBlob(blob);
+        setAudioUrl(URL.createObjectURL(blob));
+        setAppState('playback');
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      setRecordingSeconds(0);
+      
+      timerIntervalRef.current = setInterval(() => {
+        setRecordingSeconds((prev) => {
+          if (prev >= MAX_DURATION_SEC - 1) {
+            stopRecording();
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 1000);
+
+    } catch (err) {
+      showError('Microphone access is required. Please allow microphone access and try again.');
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    }
+    setIsRecording(false);
+    clearInterval(timerIntervalRef.current);
+  };
+
+  // ==========================================
+  // 2. FILE UPLOAD LOGIC
+  // ==========================================
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      showError('File is too large. Please upload an audio file under 10MB.');
+      e.target.value = '';
+      return;
+    }
+
+    setAudioBlob(file);
+    setAudioUrl(URL.createObjectURL(file));
+    setAppState('playback');
+  };
+
+  // ==========================================
+  // 3. API SUBMISSION LOGIC
+  // ==========================================
+  const handleSubmit = async () => {
+    if (!audioBlob) return;
+    setAppState('loading');
+
+    try {
+      // Convert audio blob to base64
+      const arrayBuffer = await audioBlob.arrayBuffer();
+      const bytes = new Uint8Array(arrayBuffer);
+      let binary = '';
+      const chunkSize = 8192;
+      for (let i = 0; i < bytes.length; i += chunkSize) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+      }
+      const base64 = btoa(binary);
+
+      // Resolve MIME type
+      const rawType = audioBlob.type 
+        || (audioBlob.name?.endsWith('.mp3') ? 'audio/mpeg' 
+        : audioBlob.name?.endsWith('.wav') ? 'audio/wav' 
+        : 'audio/webm');
+      
+      const MIME_MAP = { 'audio/x-m4a': 'audio/mp4', 'audio/x-wav': 'audio/wav', 'audio/mp3': 'audio/mpeg' };
+      const mimeType = MIME_MAP[rawType] || rawType;
+
+      // Send to backend
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ audio: base64, mimeType }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Server error (${res.status})`);
+      }
+
+      const data = await res.json();
+      setFeedbackData(data);
+      setAppState('feedback');
+
+    } catch (err) {
+      showError(err.message || 'Something went wrong while getting feedback.');
+    }
+  };
+
+  // ==========================================
+  // 4. UTILS
+  // ==========================================
+  const showError = (msg) => {
+    setErrorMessage(msg);
+    setAppState('error');
+    stopRecording();
+  };
+
+  const resetAll = () => {
+    setAudioBlob(null);
+    setAudioUrl(null);
+    setFeedbackData(null);
+    setErrorMessage('');
+    setIsRecording(false);
+    setRecordingSeconds(0);
+    setAppState('input');
+  };
+
+  const getScoreTier = (score) => {
+    if (score >= 85) return 'score-great';
+    if (score >= 70) return 'score-high';
+    if (score >= 50) return 'score-mid';
+    return 'score-low';
+  };
+
+  // ==========================================
+  // RENDER UI
+  // ==========================================
   return (
     <div className="talko-container">
-      {/* --- Record / Upload Section --- */}
-      <section id="recordSection" className="record-section">
-        <div className="record-area">
-          <button id="recordBtn" className="btn btn-record" aria-label="Record audio">
-            <span className="record-icon"></span>
-            <span className="record-label">Tap to Record</span>
-          </button>
-          <div id="timer" className="timer" hidden>0:00</div>
-        </div>
-
-        <div className="divider"><span>or</span></div>
-
-        <div className="upload-area">
-          <label className="btn btn-upload" htmlFor="fileInput">
-            📁 Upload Audio File
-          </label>
-          <input type="file" id="fileInput" accept="audio/*" hidden />
-          <span id="fileName" className="file-name"></span>
-        </div>
-      </section>
-
-      {/* --- Audio Playback --- */}
-      <section id="playbackSection" className="playback-section" hidden>
-        <audio id="audioPlayer" controls></audio>
-        <div className="playback-actions">
-          <button id="submitBtn" className="btn btn-submit">Get Feedback ✨</button>
-          <button id="reRecordBtn" className="btn btn-reset">🔄 Re-record</button>
-        </div>
-      </section>
-
-      {/* --- Loading State --- */}
-      <section id="loadingSection" className="loading-section" hidden>
-        <div className="spinner"></div>
-        <p>Listening to your audio and preparing feedback...</p>
-      </section>
-
-      {/* --- Feedback Display --- */}
-      <section id="feedbackSection" className="feedback-section" hidden>
-        {/* Score Card */}
-        <div id="scoreCard" className="card score-card">
-          <div className="score-card-top">
-            <div id="scoreCircle" className="score-circle">
-              <span id="scoreNumber" className="score-number"></span>
-              <span className="score-denom">/100</span>
-            </div>
-            <p id="scoreLabel" className="score-label"></p>
+      
+      {/* --- State 1: Record / Upload Section --- */}
+      {appState === 'input' && (
+        <section className="record-section">
+          <div className="record-area">
+            <button 
+              className={`btn btn-record ${isRecording ? 'recording' : ''}`} 
+              onClick={toggleRecording}
+            >
+              <span className="record-icon"></span>
+              <span className="record-label">{isRecording ? 'Tap to Stop' : 'Tap to Record'}</span>
+            </button>
+            {isRecording && <div className="timer">{formatTime(recordingSeconds)}</div>}
           </div>
-          <div className="sub-scores">
-            <div className="sub-score-row">
-              <span className="sub-score-name">Grammar</span>
-              <div className="sub-score-bar-wrap">
-                <div id="grammarBar" className="sub-score-bar"></div>
+
+          <div className="divider"><span>or</span></div>
+
+          <div className="upload-area">
+            <label className="btn btn-upload" htmlFor="fileInput">
+              📁 Upload Audio File
+            </label>
+            <input type="file" id="fileInput" accept="audio/*" hidden onChange={handleFileUpload} />
+          </div>
+        </section>
+      )}
+
+      {/* --- State 2: Audio Playback --- */}
+      {appState === 'playback' && audioUrl && (
+        <section className="playback-section">
+          <audio src={audioUrl} controls style={{ width: '100%', marginBottom: '20px' }}></audio>
+          <div className="playback-actions">
+            <button onClick={handleSubmit} className="btn btn-submit">Get Feedback ✨</button>
+            <button onClick={resetAll} className="btn btn-reset">🔄 Re-record</button>
+          </div>
+        </section>
+      )}
+
+      {/* --- State 3: Loading State --- */}
+      {appState === 'loading' && (
+        <section className="loading-section">
+          <div className="spinner"></div>
+          <p>Listening to your audio and preparing feedback...</p>
+        </section>
+      )}
+
+      {/* --- State 4: Error State --- */}
+      {appState === 'error' && (
+        <section className="error-section">
+          <p className="error-text">{errorMessage}</p>
+          <button onClick={resetAll} className="btn btn-reset">Try Again</button>
+        </section>
+      )}
+
+      {/* --- State 5: Feedback Display --- */}
+      {appState === 'feedback' && feedbackData && (
+        <section className="feedback-section">
+          {/* Score Card */}
+          <div className="card score-card">
+            <div className="score-card-top">
+              <div className={`score-circle ${getScoreTier(feedbackData.scores?.overall || 0)}`}>
+                <span className="score-number">{feedbackData.scores?.overall || '--'}</span>
+                <span className="score-denom">/100</span>
               </div>
-              <span id="grammarValue" className="sub-score-value"></span>
+              <p className="score-label">{feedbackData.scoreLabel}</p>
             </div>
-            <div className="sub-score-row">
-              <span className="sub-score-name">Vocabulary</span>
-              <div className="sub-score-bar-wrap">
-                <div id="vocabularyBar" className="sub-score-bar"></div>
+            
+            <div className="sub-scores">
+              {['grammar', 'vocabulary', 'pronunciation', 'fluency'].map((metric) => (
+                <div className="sub-score-row" key={metric}>
+                  <span className="sub-score-name" style={{ textTransform: 'capitalize' }}>{metric}</span>
+                  <div className="sub-score-bar-wrap">
+                    <div 
+                      className={`sub-score-bar ${getScoreTier(feedbackData.scores?.[metric] || 0)}`} 
+                      style={{ width: `${feedbackData.scores?.[metric] || 0}%` }}
+                    ></div>
+                  </div>
+                  <span className="sub-score-value">{feedbackData.scores?.[metric] || '--'}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Transcript */}
+          <div className="card transcript-card">
+            <h3>📝 What we heard</h3>
+            <p>{feedbackData.transcript}</p>
+          </div>
+
+          {/* Fixes */}
+          {feedbackData.fixes?.map((fix, index) => (
+            <div className="card fix-card" key={index}>
+              <span className="card-badge badge-fix">Simple Fix</span>
+              <h3>{fix.title}</h3>
+              <div className="fix-content">
+                <p className="fix-label">The Fix:</p>
+                <p className="fix-text">{fix.fix}</p>
               </div>
-              <span id="vocabularyValue" className="sub-score-value"></span>
+              <p className="tutor-note">{fix.note}</p>
             </div>
-            <div className="sub-score-row">
-              <span className="sub-score-name">Pronunciation</span>
-              <div className="sub-score-bar-wrap">
-                <div id="pronunciationBar" className="sub-score-bar"></div>
+          ))}
+
+          {/* Native Upgrade */}
+          {feedbackData.upgrade && (
+            <div className="card upgrade-card">
+              <span className="card-badge badge-upgrade">Native Upgrade 🚀</span>
+              <h3>{feedbackData.upgrade.title}</h3>
+              <div className="fix-content">
+                <p className="fix-label">Native Upgrade:</p>
+                <p className="fix-text">{feedbackData.upgrade.fix}</p>
               </div>
-              <span id="pronunciationValue" className="sub-score-value"></span>
+              <p className="tutor-note">{feedbackData.upgrade.note}</p>
             </div>
-            <div className="sub-score-row">
-              <span className="sub-score-name">Fluency</span>
-              <div className="sub-score-bar-wrap">
-                <div id="fluencyBar" className="sub-score-bar"></div>
+          )}
+
+          {/* Pronunciation Fix */}
+          {feedbackData.pronunciation && (
+            <div className="card pron-card">
+              <span className="card-badge badge-pron">Pronunciation 🗣️</span>
+              <h3>{feedbackData.pronunciation.title}</h3>
+              <div className="fix-content">
+                <p className="fix-label">Say it like this:</p>
+                <p className="fix-text">{feedbackData.pronunciation.fix}</p>
               </div>
-              <span id="fluencyValue" className="sub-score-value"></span>
+              <p className="tutor-note">{feedbackData.pronunciation.note}</p>
             </div>
-          </div>
-        </div>
+          )}
 
-        {/* Transcript */}
-        <div id="transcriptCard" className="card transcript-card">
-          <h3>📝 What we heard</h3>
-          <p id="transcriptText"></p>
-        </div>
+          <button onClick={resetAll} className="btn btn-reset" style={{ marginTop: '20px' }}>🎙️ Try Another Recording</button>
+        </section>
+      )}
 
-        {/* Fixes */}
-        <div id="fix1Card" className="card fix-card">
-          <span className="card-badge badge-fix">Simple Fix</span>
-          <h3 id="fix1Title"></h3>
-          <div className="fix-content">
-            <p className="fix-label">The Fix:</p>
-            <p id="fix1Fix" className="fix-text"></p>
-          </div>
-          <p id="fix1Note" className="tutor-note"></p>
-        </div>
-
-        <div id="fix2Card" className="card fix-card">
-          <span className="card-badge badge-fix">Simple Fix</span>
-          <h3 id="fix2Title"></h3>
-          <div className="fix-content">
-            <p className="fix-label">The Fix:</p>
-            <p id="fix2Fix" className="fix-text"></p>
-          </div>
-          <p id="fix2Note" className="tutor-note"></p>
-        </div>
-
-        {/* Native Upgrade */}
-        <div id="upgradeCard" className="card upgrade-card">
-          <span className="card-badge badge-upgrade">Native Upgrade 🚀</span>
-          <h3 id="upgradeTitle"></h3>
-          <div className="fix-content">
-            <p className="fix-label">Native Upgrade:</p>
-            <p id="upgradeFix" className="fix-text"></p>
-          </div>
-          <p id="upgradeNote" className="tutor-note"></p>
-        </div>
-
-        {/* Pronunciation Fix */}
-        <div id="pronCard" className="card pron-card" hidden>
-          <span className="card-badge badge-pron">Pronunciation 🗣️</span>
-          <h3 id="pronTitle"></h3>
-          <div className="fix-content">
-            <p className="fix-label">Say it like this:</p>
-            <p id="pronFix" className="fix-text"></p>
-          </div>
-          <p id="pronNote" className="tutor-note"></p>
-        </div>
-
-        {/* Share Nudge */}
-        <div id="shareNudge" className="share-nudge">
-          <p className="nudge-text">🏆 Post your score in the community! Members who share get more support and feedback.</p>
-          <button id="nudgeCopyBtn" className="btn btn-nudge-copy">📋 Copy & Share</button>
-          <p id="nudgeConfirm" className="nudge-confirm" hidden></p>
-        </div>
-
-        {/* Share + Try Again */}
-        <button id="shareBtn" className="btn btn-share">🌟 Share Your Progress</button>
-        <button id="resetBtn" className="btn btn-reset">🎙️ Try Another Recording</button>
-      </section>
-
-      {/* --- Share Modal --- */}
-      <div id="shareModal" className="modal-overlay" hidden>
-        <div className="modal">
-          <button id="modalCloseBtn" className="modal-close" aria-label="Close">&times;</button>
-          <h2>Share Your Progress!</h2>
-          <p className="modal-subtitle">Post this in the community!</p>
-          <div id="sharePreviewWrap" className="share-preview-wrap">
-            <p id="sharePreviewSpinner" className="share-preview-spinner">⏳ Generating preview...</p>
-            <img id="sharePreviewImg" className="share-preview-img" alt="Progress card" hidden />
-          </div>
-          <div className="share-img-actions">
-            <button id="copyImgBtn" className="btn btn-modal-action">📋 Copy Text</button>
-            <button id="downloadImgBtn" className="btn btn-modal-action btn-modal-primary">⬇️ Download</button>
-          </div>
-          <button id="downloadAudioBtn" className="btn btn-modal-action btn-modal-audio">🎵 Download Audio</button>
-          <p id="shareConfirm" className="copy-confirm" hidden></p>
-        </div>
-      </div>
-
-      {/* --- Share Card (off-screen) --- */}
-      <div id="shareCard" className="share-card" aria-hidden="true">
-        <div className="sc-header">
-          <span className="sc-logo">🎙️ Tuesday Talko</span>
-          <span className="sc-tagline">AI English Speaking Feedback</span>
-        </div>
-        <div className="sc-score-wrap">
-          <div id="scScoreCircle" className="sc-score-circle">
-            <span id="scScoreNumber" className="sc-score-number"></span>
-            <span className="sc-score-denom">/100</span>
-          </div>
-          <p id="scScoreLabel" className="sc-score-label"></p>
-        </div>
-        <div className="sc-sub-scores">
-          {/* Sub scores simplified for brevity, you can add them back following the same pattern */}
-           <div className="sc-sub-row">
-            <span className="sc-sub-name">Grammar</span>
-            <div className="sc-sub-bar-wrap">
-              <div id="scGrammarBar" className="sc-sub-bar"></div>
-            </div>
-            <span id="scGrammarValue" className="sc-sub-value"></span>
-          </div>
-          {/* Add Vocabulary, Pronunciation, Fluency here */}
-        </div>
-        <div className="sc-summary">
-          <p className="sc-summary-title">My Feedback Summary</p>
-          <div className="sc-summary-item">
-            <span className="sc-item-badge sc-badge-fix">Fix 1</span>
-            <div className="sc-item-body">
-              <p id="scFix1Title" className="sc-item-title"></p>
-              <p id="scFix1Fix" className="sc-item-fix"></p>
-            </div>
-          </div>
-          <div className="sc-summary-item">
-            <span className="sc-item-badge sc-badge-fix">Fix 2</span>
-            <div className="sc-item-body">
-              <p id="scFix2Title" className="sc-item-title"></p>
-              <p id="scFix2Fix" className="sc-item-fix"></p>
-            </div>
-          </div>
-          <div className="sc-summary-item">
-            <span className="sc-item-badge sc-badge-upgrade">Upgrade 🚀</span>
-            <div className="sc-item-body">
-              <p id="scUpgradeTitle" className="sc-item-title"></p>
-              <p id="scUpgradeFix" className="sc-item-fix sc-item-fix--upgrade"></p>
-            </div>
-          </div>
-          <div id="scPronRow" className="sc-summary-item">
-            <span className="sc-item-badge sc-badge-pron">Pronunciation 🗣️</span>
-            <div className="sc-item-body">
-              <p id="scPronTitle" className="sc-item-title"></p>
-              <p id="scPronFix" className="sc-item-fix sc-item-fix--pron"></p>
-            </div>
-          </div>
-        </div>
-        <div className="sc-footer">
-          Practice English with WordBuddy.ai
-        </div>
-      </div>
-
-      {/* --- Error State --- */}
-      <section id="errorSection" className="error-section" hidden>
-        <p id="errorText" className="error-text"></p>
-        <a id="openInBrowserBtn" className="btn btn-open-browser" href="https://talko-temp.vercel.app/" target="_blank" rel="noopener noreferrer" hidden>
-          🎙️ Open in Browser
-        </a>
-        <button id="errorResetBtn" className="btn btn-reset">Try Again</button>
-      </section>
     </div>
   );
 }
