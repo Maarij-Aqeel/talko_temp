@@ -1032,3 +1032,256 @@ header h1 {
     height: 100px;
   }
 }
+
+/* ========================================= */
+/* === PREMIUM DARK EMERALD THEME OVERRIDE === */
+/* ========================================= */
+:root {
+  --primary: #408A71;
+  --primary-dark: #285A48;
+  --accent: #B0E4CC;
+  --bg: #091413;
+  --card-bg: rgba(40, 90, 72, 0.12);
+  --card-border: rgba(176, 228, 204, 0.15);
+  --text: #ffffff;
+  --text-light: #B0E4CC;
+  --border: rgba(64, 138, 113, 0.3);
+  --radius: 16px;
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --glass-blur: blur(16px);
+}
+
+body {
+  background: radial-gradient(circle at top center, #112621 0%, var(--bg) 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* Enhancing Inputs & Containers */
+.container {
+  max-width: 600px;
+}
+
+/* Glassmorphism Cards */
+.card, .score-card, .transcript-card, .fix-card, .upgrade-card, .pron-card, .share-nudge, .modal {
+  background: var(--card-bg) !important;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--card-border) !important;
+  box-shadow: var(--shadow) !important;
+  color: var(--text);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(176, 228, 204, 0.3) !important;
+}
+
+/* Buttons */
+.btn-submit, .btn-play-now, .btn-open-browser, .btn-share, .btn-nudge-copy, .btn-modal-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+  color: white !important;
+  box-shadow: 0 4px 20px rgba(64, 138, 113, 0.4) !important;
+  border: none !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.btn-submit:hover, .btn-play-now:hover, .btn-open-browser:hover, .btn-share:hover, .btn-nudge-copy:hover, .btn-modal-primary:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--bg)) !important;
+  box-shadow: 0 6px 25px rgba(64, 138, 113, 0.6) !important;
+  transform: translateY(-2px);
+}
+
+.btn-reset, .btn-modal-action {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  background: transparent !important;
+}
+
+.btn-reset:hover, .btn-modal-action:hover {
+  background: rgba(176, 228, 204, 0.1) !important;
+  color: #fff !important;
+}
+
+.btn-record {
+  background: rgba(40, 90, 72, 0.2) !important;
+  border-color: var(--primary) !important;
+  backdrop-filter: var(--glass-blur);
+}
+
+.btn-record:hover {
+  box-shadow: 0 0 25px rgba(64, 138, 113, 0.5) !important;
+}
+
+.record-icon {
+  background: var(--accent) !important;
+}
+
+.btn-record.recording .record-icon {
+  background: #ff5252 !important;
+}
+
+.btn-record.recording {
+  border-color: #ff5252 !important;
+  animation: pulse-dark 1.5s ease-in-out infinite !important;
+}
+
+@keyframes pulse-dark {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.4); }
+  50% { box-shadow: 0 0 0 15px rgba(255, 82, 82, 0); }
+}
+
+/* Upload */
+.btn-upload {
+  background: rgba(40, 90, 72, 0.1) !important;
+  border-color: var(--border) !important;
+  color: var(--accent) !important;
+}
+
+.btn-upload:hover {
+  border-color: var(--accent) !important;
+  background: rgba(176, 228, 204, 0.1) !important;
+}
+
+/* Text overrides */
+header h1, .score-label {
+  color: var(--accent) !important;
+}
+
+.subtitle, .loading-section p, .tutor-note, .nudge-text {
+  color: var(--text-light) !important;
+}
+
+.fix-content {
+  background: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fix-text {
+  color: #fff !important;
+}
+
+/* Badges */
+.card-badge, .sc-item-badge {
+  background: rgba(255,255,255,0.1) !important;
+  color: var(--accent) !important;
+  border: 1px solid rgba(176, 228, 204, 0.3);
+}
+
+.badge-fix { color: #86efac !important; border-color: #86efac !important; }
+.badge-upgrade { color: #fde047 !important; border-color: #fde047 !important; }
+.badge-pron { color: #c4b5fd !important; border-color: #c4b5fd !important; }
+
+.sub-score-bar-wrap { background: rgba(0,0,0,0.3) !important; }
+.score-circle { background: transparent !important; border-color: var(--border) !important; }
+
+/* Modal specific */
+.modal-close {
+  color: var(--text-light) !important;
+}
+
+.share-preview-wrap {
+  background: rgba(0,0,0,0.2) !important;
+}
+
+/* Divider */
+.divider::before, .divider::after {
+  background: var(--border) !important;
+}
+
+/* --- LOGIN PAGE SPECIFIC STYLES --- */
+.login-page-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.login-card {
+  max-width: 420px;
+  width: 100%;
+  padding: 40px !important;
+  text-align: center;
+}
+
+.login-header {
+  margin-bottom: 30px;
+}
+
+.login-icon {
+  font-size: 3rem;
+  display: inline-block;
+  margin-bottom: 10px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.login-header h1 {
+  font-size: 1.8rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.login-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.login-input::placeholder {
+  color: rgba(176, 228, 204, 0.5);
+}
+
+.login-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(176, 228, 204, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  margin-top: 10px;
+}
+
+.login-message {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 8px;
+  background: rgba(64, 138, 113, 0.2);
+  border: 1px solid var(--primary);
+  color: var(--accent);
+  font-size: 0.9rem;
+}
