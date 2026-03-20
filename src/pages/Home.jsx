@@ -68,6 +68,18 @@ export default function Home() {
           </Link>
         </div>
 
+        {/* Smart English Coach Card */}
+        <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>✨</div>
+          <h2 style={{ marginBottom: '8px' }}>Smart Coach</h2>
+          <p style={{ color: '#666', marginBottom: '24px', flexGrow: 1 }}>
+            Practice your English in any format. Write a text or speak into the microphone to get instant AI feedback and scores!
+          </p>
+           <Link to="/smart-coach" style={{ textDecoration: 'none' }}>
+            <button className="btn btn-accent" style={{ width: '100%' }}>Launch SmartCoach</button>
+          </Link>
+        </div>
+
       </div>
     </div>
   );

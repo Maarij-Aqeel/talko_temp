@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute"; // Import the bouncer
 import DailyPen from "./pages/DailyPen";
 import Tuesday_talko from "./pages/Tuesday_talko";
 import GuessLingo from "./pages/GuessLingo";
+import SmartCoach from "./pages/SmartCoach";
 
 export default function App() {
   return (
@@ -31,26 +32,45 @@ export default function App() {
           }
         />
 
-      {/* Tuesday Talko */}
-        <Route path="/tuesday_talko" element={
-          <ProtectedRoute>
-            <Tuesday_talko/>
-          </ProtectedRoute>
-        }/>
+        {/* Tuesday Talko */}
+        <Route
+          path="/tuesday_talko"
+          element={
+            <ProtectedRoute>
+              <Tuesday_talko />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Daily-Pen tool */}
-        <Route path="/dailypen" element={
-          <ProtectedRoute>
-            <DailyPen/>
-          </ProtectedRoute>
-        }/>
+        <Route
+          path="/dailypen"
+          element={
+            <ProtectedRoute>
+              <DailyPen />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Guess-Lingo tool */}
-        <Route path="/guesslingo" element={
-          <ProtectedRoute>
-            <GuessLingo/>
-          </ProtectedRoute>
-        }/>
+        <Route
+          path="/guesslingo"
+          element={
+            <ProtectedRoute>
+              <GuessLingo />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Guess-Lingo tool */}
+        <Route
+          path="/smart-coach"
+          element={
+            <ProtectedRoute>
+              <SmartCoach />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Catch-all: If they type a random URL, send them to login */}
         <Route path="*" element={<Navigate to="/login" replace />} />

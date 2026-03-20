@@ -1,0 +1,117 @@
+/* === Scoped Smart English Coach CSS === */
+.smartcoach-container {
+  --primary: #219ebc;
+  --primary-dark: #1a7a94;
+  --accent: #fb8500;
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+  --border: #e5e7eb;
+  --radius: 12px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.smartcoach-container *,
+.smartcoach-container *::before,
+.smartcoach-container *::after { margin: 0; padding: 0; box-sizing: border-box; }
+.smartcoach-container [hidden] { display: none !important; }
+
+.smartcoach-container.container { max-width: 520px; margin: 0 auto; padding: 24px 16px 40px; }
+.smartcoach-container header { text-align: center; margin-bottom: 28px; }
+.smartcoach-container header h1 { font-size: 1.5rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+.smartcoach-container .subtitle { font-size: 0.9rem; color: var(--text-light); }
+
+/* === Input Tabs === */
+.smartcoach-container .input-tabs { display: flex; background: var(--border); border-radius: 999px; padding: 4px; margin-bottom: 20px; gap: 4px; }
+.smartcoach-container .tab-btn { flex: 1; padding: 10px 16px; border: none; border-radius: 999px; background: transparent; font-family: inherit; font-size: 0.9rem; font-weight: 600; color: var(--text-light); cursor: pointer; transition: all 0.2s ease; }
+.smartcoach-container .tab-btn.active { background: var(--card-bg); color: var(--primary); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); }
+.smartcoach-container .tab-btn:hover:not(.active) { color: var(--text); }
+
+/* === Input Section === */
+.smartcoach-container .input-section { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.smartcoach-container .textarea-wrap { width: 100%; position: relative; }
+.smartcoach-container .text-input { width: 100%; padding: 14px 16px 32px; border: 2px solid var(--border); border-radius: var(--radius); font-family: inherit; font-size: 0.95rem; line-height: 1.6; color: var(--text); background: var(--card-bg); resize: vertical; min-height: 140px; transition: border-color 0.2s ease; }
+.smartcoach-container .text-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(33, 158, 188, 0.1); }
+.smartcoach-container .char-count { position: absolute; bottom: 10px; right: 14px; font-size: 0.75rem; color: var(--text-light); font-weight: 500; }
+
+/* === Speak Mode === */
+.smartcoach-container .record-area { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.smartcoach-container .btn-record { width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary); background: var(--card-bg); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: all 0.2s ease; box-shadow: var(--shadow); }
+.smartcoach-container .btn-record.recording { border-color: #ef4444; animation: sc-pulse 1.5s ease-in-out infinite; }
+.smartcoach-container .record-icon { width: 28px; height: 28px; border-radius: 50%; background: var(--primary); transition: all 0.2s ease; }
+.smartcoach-container .btn-record.recording .record-icon { background: #ef4444; border-radius: 4px; width: 22px; height: 22px; }
+.smartcoach-container .record-label { font-size: 0.7rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+.smartcoach-container .btn-record.recording .record-label { color: #ef4444; }
+.smartcoach-container .timer { font-size: 1.1rem; font-weight: 600; color: #ef4444; font-variant-numeric: tabular-nums; }
+
+@keyframes sc-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); } 50% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); } }
+
+.smartcoach-container .divider { display: flex; align-items: center; width: 100%; gap: 12px; color: var(--text-light); font-size: 0.8rem; }
+.smartcoach-container .divider::before, .smartcoach-container .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.smartcoach-container .upload-area { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.smartcoach-container .btn-upload { display: inline-block; padding: 10px 24px; border: 2px dashed var(--border); border-radius: var(--radius); background: var(--card-bg); color: var(--text-light); font-size: 0.85rem; cursor: pointer; transition: all 0.2s ease; }
+.smartcoach-container .file-name { font-size: 0.8rem; color: var(--primary); font-weight: 500; }
+
+/* === Playback === */
+.smartcoach-container .playback-section { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 20px; }
+.smartcoach-container .playback-section audio { width: 100%; max-width: 400px; border-radius: 8px; }
+.smartcoach-container .playback-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+/* === Buttons === */
+.smartcoach-container .btn { font-family: inherit; font-weight: 600; cursor: pointer; border: none; border-radius: var(--radius); transition: all 0.2s ease; }
+.smartcoach-container .btn-submit { padding: 12px 32px; background: var(--primary); color: white; font-size: 1rem; border-radius: 999px; box-shadow: 0 4px 12px rgba(33, 158, 188, 0.3); }
+.smartcoach-container .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+.smartcoach-container .btn-reset { margin-top: 12px; padding: 10px 24px; background: transparent; color: var(--primary); border: 2px solid var(--primary); font-size: 0.9rem; border-radius: 999px; }
+.smartcoach-container .btn-share { width: 100%; padding: 14px 24px; background: linear-gradient(135deg, #fb8500, #f77f00); color: white; font-size: 1rem; border-radius: 999px; box-shadow: 0 4px 12px rgba(251, 133, 0, 0.3); text-align: center; margin-top: 10px; }
+
+/* === Feedback / Scores === */
+.smartcoach-container .feedback-section { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+.smartcoach-container .card { background: var(--card-bg); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+.smartcoach-container .card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+
+.smartcoach-container .score-card-top { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.smartcoach-container .score-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+.smartcoach-container .score-great { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+.smartcoach-container .score-high { background: linear-gradient(135deg, #219ebc, #1a7a94); color: white; }
+.smartcoach-container .score-mid { background: linear-gradient(135deg, #f97316, #d97706); color: white; }
+.smartcoach-container .score-low { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+.smartcoach-container .score-number { font-size: 1.6rem; font-weight: 800; line-height: 1; color: #fff;}
+.smartcoach-container .score-denom { font-size: 0.65rem; font-weight: 600; color: rgba(255, 255, 255, 0.8); }
+.smartcoach-container .score-label { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+
+.smartcoach-container .sub-score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px;}
+.smartcoach-container .sub-score-name { width: 85px; font-size: 0.8rem; font-weight: 600; color: var(--text-light); flex-shrink: 0; }
+.smartcoach-container .sub-score-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.smartcoach-container .sub-score-bar { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+.smartcoach-container .sub-score-value { width: 28px; text-align: right; font-size: 0.8rem; font-weight: 700; color: var(--text); }
+
+/* === Badges & Fixes === */
+.smartcoach-container .card-badge { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
+.smartcoach-container .badge-fix { background: #fef3c7; color: #92400e; }
+.smartcoach-container .badge-upgrade { background: #dbeafe; color: #1e40af; }
+.smartcoach-container .badge-pron { background: #ede9fe; color: #7c3aed; }
+.smartcoach-container .badge-clarity { background: #ccfbf1; color: #0f766e; }
+
+.smartcoach-container .fix-stacked { margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.smartcoach-container .fix-stacked-row { padding: 10px 14px; }
+.smartcoach-container .fix-stacked-before { background: #fef2f2; border-bottom: 1px solid var(--border); }
+.smartcoach-container .fix-stacked-after { background: #f0fdf4; }
+.smartcoach-container .fix-stacked-label { font-size: 0.7rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; display: block; margin-bottom: 4px; }
+.smartcoach-container .fix-stacked-text { font-size: 0.9rem; line-height: 1.5; color: var(--text); }
+.smartcoach-container .fix-hl { background: #fecaca; border-radius: 3px; padding: 0 2px; }
+.smartcoach-container .fix-stacked-after .fix-hl { background: #bbf7d0; font-weight: 600; }
+.smartcoach-container .tutor-note { font-size: 0.85rem; color: var(--text-light); font-style: italic; }
+
+/* === Loading / Modals === */
+.smartcoach-container .spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; margin: 0 auto 16px; animation: sc-spin 0.8s linear infinite; }
+@keyframes sc-spin { to { transform: rotate(360deg); } }
+.smartcoach-container .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
+.smartcoach-container .modal { background: var(--card-bg); border-radius: 16px; padding: 28px 24px; max-width: 380px; width: 100%; text-align: center; position: relative; }
+.smartcoach-container .share-preview-img { width: 100%; border-radius: 10px; margin-bottom: 10px;}
+.smartcoach-container .share-img-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
