@@ -1,0 +1,977 @@
+/* === Scoped DailyPen CSS === */
+.dailypen-container {
+  --primary: #219ebc;
+  --primary-dark: #1a7a94;
+  --accent: #fb8500;
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+  --border: #e5e7eb;
+  --radius: 12px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --green: #10b981;
+  --orange: #f59e0b;
+  --red: #ef4444;
+
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.dailypen-container *,
+.dailypen-container *::before,
+.dailypen-container *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dailypen-container [hidden] {
+  display: none !important;
+}
+
+/* === Container === */
+.dailypen-container.container {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 20px 16px 40px;
+}
+
+/* === Step Sections === */
+.dailypen-container .step-section {
+  animation: dp-fadeIn 0.3s ease;
+}
+
+@keyframes dp-fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dailypen-container .step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dailypen-container .step-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.dailypen-container .btn-back {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--text-light);
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.dailypen-container .btn-back:hover {
+  background: var(--border);
+}
+
+/* === Buttons === */
+.dailypen-container .btn {
+  font-family: inherit;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.dailypen-container .btn-primary {
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+}
+
+.dailypen-container .btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(33, 158, 188, 0.3);
+}
+
+.dailypen-container .btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--border);
+  padding: 10px 20px;
+  font-size: 0.9rem;
+}
+
+.dailypen-container .btn-secondary:hover {
+  border-color: var(--primary);
+  background: rgba(33, 158, 188, 0.04);
+}
+
+.dailypen-container .btn-large {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 1rem;
+}
+
+.dailypen-container .btn-small {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+}
+
+.dailypen-container .btn-accent {
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+}
+
+.dailypen-container .btn-accent:hover {
+  background: #e07600;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(251, 133, 0, 0.3);
+}
+
+.dailypen-container .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* === Landing === */
+.dailypen-container .landing-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-top: 40px;
+}
+
+.dailypen-container .landing-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.dailypen-container .subtitle {
+  font-size: 1rem;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.dailypen-container .landing-features {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.dailypen-container .feature-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+}
+
+/* === Prompt Selection === */
+.dailypen-container .prompt-tabs {
+  display: flex;
+  background: var(--border);
+  border-radius: 999px;
+  padding: 4px;
+  margin-bottom: 16px;
+  gap: 4px;
+}
+
+.dailypen-container .prompt-tab {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dailypen-container .prompt-tab.active {
+  background: var(--card-bg);
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.dailypen-container .prompt-loading {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--text-light);
+}
+
+.dailypen-container .prompt-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.dailypen-container .prompt-card {
+  background: var(--card-bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dailypen-container .prompt-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(33, 158, 188, 0.1);
+  transform: translateY(-2px);
+}
+
+.dailypen-container .prompt-card-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.dailypen-container .prompt-source {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  background: var(--bg);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.dailypen-container .prompt-vocab-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.dailypen-container .vocab-chip {
+  display: inline-block;
+  background: rgba(33, 158, 188, 0.08);
+  color: var(--primary-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.dailypen-container .prompt-lang-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dailypen-container .prompt-lang-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.dailypen-container .prompt-lang-select {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  color: var(--text);
+  background: var(--card-bg);
+}
+
+.dailypen-container .prompt-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.dailypen-container .prompt-translate-btn {
+  display: inline-block;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+
+.dailypen-container .prompt-translate-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.dailypen-container .prompt-translation {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #fffbeb;
+  border-radius: 8px;
+  border: 1px solid #fef3c7;
+}
+
+.dailypen-container .prompt-translation-text {
+  font-size: 0.85rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* === Writing Section === */
+.dailypen-container .selected-prompt {
+  background: linear-gradient(135deg, rgba(33, 158, 188, 0.06), rgba(251, 133, 0, 0.04));
+  border-left: 3px solid var(--primary);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.dailypen-container .vocab-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.dailypen-container .vocab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.dailypen-container .vocab-toggle {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: var(--text-light);
+  padding: 4px;
+}
+
+.dailypen-container .vocab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dailypen-container .vocab-chip-write {
+  font-size: 0.85rem;
+  padding: 4px 12px;
+}
+
+.dailypen-container .write-area {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.dailypen-container .journal-input {
+  width: 100%;
+  padding: 14px 16px;
+  padding-bottom: 36px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--card-bg);
+  resize: vertical;
+  min-height: 200px;
+  transition: border-color 0.2s ease;
+}
+
+.dailypen-container .journal-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(33, 158, 188, 0.1);
+}
+
+.dailypen-container .journal-input::placeholder {
+  color: #aaa;
+}
+
+.dailypen-container .write-meta {
+  position: absolute;
+  bottom: 10px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+/* === Lifeline === */
+.dailypen-container .lifeline-section {
+  margin-bottom: 20px;
+}
+
+.dailypen-container .lifeline-toggle {
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  width: 100%;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.dailypen-container .lifeline-toggle:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.dailypen-container .lifeline-panel {
+  margin-top: 12px;
+}
+
+.dailypen-container .lifeline-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dailypen-container .native-lang-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.dailypen-container .lifeline-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.dailypen-container .native-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.dailypen-container .native-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.dailypen-container .lifeline-results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.dailypen-container .lifeline-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  position: relative;
+  animation: dp-fadeIn 0.3s ease;
+}
+
+.dailypen-container .lifeline-card-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text-light);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.dailypen-container .lifeline-native {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.dailypen-container .lifeline-english {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.dailypen-container .lifeline-explanation {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.dailypen-container .lifeline-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.dailypen-container .lifeline-reminder {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* === Loading === */
+.dailypen-container .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: dp-spin 0.8s linear infinite;
+  margin: 40px auto 16px;
+}
+
+@keyframes dp-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* === Cards === */
+.dailypen-container .card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+.dailypen-container .welldone-card {
+  background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+  border-color: #bbf7d0;
+  text-align: center;
+}
+
+.dailypen-container .welldone-card p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #166534;
+  line-height: 1.5;
+}
+
+.dailypen-container .score-card-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dailypen-container .score-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dailypen-container .score-number {
+  font-size: 1.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+}
+
+.dailypen-container .score-denom {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dailypen-container .score-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.dailypen-container .score-great { background: linear-gradient(135deg, #10b981, #059669); }
+.dailypen-container .score-high { background: linear-gradient(135deg, #219ebc, #1a7a94); }
+.dailypen-container .score-mid { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.dailypen-container .score-low { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+.dailypen-container .sub-scores {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dailypen-container .sub-score-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dailypen-container .sub-score-name {
+  width: 85px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  flex-shrink: 0;
+}
+
+.dailypen-container .sub-score-bar-wrap {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.dailypen-container .sub-score-bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+.dailypen-container .sub-score-value {
+  width: 28px;
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.dailypen-container .word-count-badge {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* === Fix Cards === */
+.dailypen-container .card-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.dailypen-container .badge-fix { background: #fef3c7; color: #92400e; }
+.dailypen-container .badge-upgrade { background: #dbeafe; color: #1e40af; }
+.dailypen-container .badge-challenge { background: #fce7f3; color: #9d174d; }
+
+.dailypen-container .fix-card h3,
+.dailypen-container .upgrade-card h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.dailypen-container .fix-stacked {
+  margin-bottom: 10px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.dailypen-container .fix-stacked-row {
+  padding: 10px 14px;
+}
+
+.dailypen-container .fix-stacked-before {
+  background: #fef2f2;
+  border-bottom: 1px solid var(--border);
+}
+
+.dailypen-container .fix-stacked-after {
+  background: #f0fdf4;
+}
+
+.dailypen-container .fix-stacked-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.dailypen-container .fix-stacked-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.dailypen-container .fix-stacked-before .fix-hl {
+  background: #fecaca;
+  border-radius: 3px;
+  padding: 0 2px;
+}
+
+.dailypen-container .fix-stacked-after .fix-hl {
+  background: #bbf7d0;
+  border-radius: 3px;
+  padding: 0 2px;
+  font-weight: 600;
+}
+
+.dailypen-container .tutor-note {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* === Full Corrected === */
+.dailypen-container .fullcorrected-card {
+  border-color: #c7d2fe;
+}
+
+.dailypen-container .badge-corrected {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.dailypen-container .fc-tabs {
+  display: flex;
+  background: var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  margin-bottom: 10px;
+  gap: 3px;
+}
+
+.dailypen-container .fc-tab {
+  flex: 1;
+  padding: 7px 10px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dailypen-container .fc-tab.active {
+  background: var(--card-bg);
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.dailypen-container .fc-content {
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--text);
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* === Rewrite Challenge === */
+.dailypen-container .rewrite-card {
+  border-color: #fbcfe8;
+}
+
+.dailypen-container .rewrite-prompt {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.dailypen-container .rewrite-original {
+  background: #fef2f2;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: var(--red);
+  line-height: 1.5;
+}
+
+.dailypen-container .rewrite-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text);
+  resize: none;
+  margin-bottom: 10px;
+}
+
+.dailypen-container .rewrite-hint {
+  background: #f0fdf4;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.dailypen-container .rewrite-answer {
+  margin-top: 6px;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.dailypen-container .rewrite-feedback {
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.dailypen-container .rewrite-fb-great { background: #f0fdf4; border: 1px solid #bbf7d0; }
+.dailypen-container .rewrite-fb-good { background: #fefce8; border: 1px solid #fef08a; }
+.dailypen-container .rewrite-fb-try_again { background: #fef2f2; border: 1px solid #fecaca; }
+
+.dailypen-container .rewrite-fb-rating { font-weight: 600; margin-bottom: 4px; }
+.dailypen-container .rewrite-fb-tip { color: var(--text-light); font-style: italic; }
+
+.dailypen-container .rewrite-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* === Feedback Actions === */
+.dailypen-container .feedback-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.dailypen-container .error-text {
+  text-align: center;
+  color: var(--red);
+  font-weight: 500;
+  margin: 40px 0 20px;
+}
+
+/* === Modal === */
+.dailypen-container .modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+.dailypen-container .modal {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.dailypen-container .modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--text-light);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.dailypen-container .share-type-toggle {
+  display: flex;
+  background: var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  margin-bottom: 14px;
+  gap: 3px;
+}
+
+.dailypen-container .share-type-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dailypen-container .share-type-btn.active {
+  background: var(--card-bg);
+  color: var(--primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.dailypen-container .share-preview-img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  display: block;
+  margin: 15px auto;
+}
