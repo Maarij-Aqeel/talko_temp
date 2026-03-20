@@ -1,0 +1,163 @@
+/* === Scoped GuessLingo CSS === */
+.guesslingo-container {
+  --primary: #7c3aed;
+  --primary-dark: #6d28d9;
+  --primary-light: #ede9fe;
+  --accent: #f59e0b;
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --text: #333;
+  --text-light: #666;
+  --border: #e5e7eb;
+  --radius: 12px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.guesslingo-container *,
+.guesslingo-container *::before,
+.guesslingo-container *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.guesslingo-container [hidden] {
+  display: none !important;
+}
+
+.guesslingo-container.container {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+.guesslingo-container .landing-header { text-align: center; margin-bottom: 24px; }
+.guesslingo-container .landing-header h1 { font-size: 1.6rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+.guesslingo-container .subtitle { font-size: 0.9rem; color: var(--text-light); }
+.guesslingo-container .landing-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.guesslingo-container .feature-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; font-size: 0.9rem; font-weight: 500; }
+
+.guesslingo-container .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px 20px; border: none; border-radius: var(--radius); font-family: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+.guesslingo-container .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.guesslingo-container .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2); }
+.guesslingo-container .btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+.guesslingo-container .btn-secondary { background: var(--card-bg); color: var(--text); border: 2px solid var(--border); }
+.guesslingo-container .btn-secondary:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+.guesslingo-container .btn-large { width: 100%; padding: 16px 24px; font-size: 1rem; border-radius: 999px; }
+
+.guesslingo-container .progress-bar-wrap { margin-bottom: 20px; }
+.guesslingo-container .progress-info { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.guesslingo-container .progress-label { font-size: 0.8rem; font-weight: 600; color: var(--text-light); }
+.guesslingo-container .progress-score { font-size: 0.8rem; font-weight: 700; color: var(--primary); }
+.guesslingo-container .progress-track { height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.guesslingo-container .progress-fill { height: 100%; background: var(--primary); border-radius: 999px; transition: width 0.4s ease; }
+
+.guesslingo-container .word-display { text-align: center; margin-bottom: 16px; padding: 20px 16px; background: var(--card-bg); border-radius: var(--radius); border: 2px solid var(--border); }
+.guesslingo-container .word-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.guesslingo-container .badge-idiom { background: #fef3c7; color: #92400e; }
+.guesslingo-container .badge-vocab { background: var(--primary-light); color: var(--primary-dark); }
+.guesslingo-container .current-word { font-size: 1.4rem; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.guesslingo-container .word-prompt { font-size: 0.85rem; color: var(--text-light); }
+
+.guesslingo-container .chat-area { display: flex; flex-direction: column; gap: 10px; min-height: 100px; max-height: 300px; overflow-y: auto; margin-bottom: 16px; padding: 8px 0; }
+.guesslingo-container .chat-bubble { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 0.9rem; line-height: 1.5; word-wrap: break-word; }
+.guesslingo-container .chat-ai { align-self: flex-start; background: var(--primary-light); color: var(--text); border-bottom-left-radius: 4px; }
+.guesslingo-container .chat-user { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 4px; }
+
+.guesslingo-container .input-area { margin-bottom: 12px; }
+.guesslingo-container .input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+.guesslingo-container .user-input { flex: 1; padding: 12px 16px; border: 2px solid var(--border); border-radius: 999px; font-family: inherit; font-size: 0.9rem; color: var(--text); background: var(--card-bg); transition: border-color 0.2s ease; }
+.guesslingo-container .user-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1); }
+.guesslingo-container .btn-send { width: 44px; height: 44px; padding: 0; border-radius: 50%; background: var(--primary); color: #fff; font-size: 1.1rem; flex-shrink: 0; }
+.guesslingo-container .btn-send:hover:not(:disabled) { background: var(--primary-dark); }
+.guesslingo-container .input-actions { display: flex; gap: 8px; justify-content: center; }
+.guesslingo-container .btn-mic { padding: 8px 16px; border-radius: 999px; background: var(--card-bg); border: 2px solid var(--border); font-size: 0.85rem; color: var(--text); }
+.guesslingo-container .btn-stuck { padding: 8px 16px; border-radius: 999px; background: #fef3c7; border: 2px solid #fcd34d; font-size: 0.85rem; color: #92400e; font-weight: 600; }
+.guesslingo-container .btn-skip { padding: 8px 16px; border-radius: 999px; background: var(--card-bg); border: 2px solid var(--border); font-size: 0.85rem; color: var(--text-light); font-weight: 600; }
+.guesslingo-container .recording-indicator { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px; background: #fef2f2; border-radius: var(--radius); border: 1px solid #fecaca; }
+.guesslingo-container .rec-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--danger); animation: gl-pulse 1.2s ease-in-out infinite; }
+@keyframes gl-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.guesslingo-container .rec-timer { font-size: 0.85rem; font-weight: 600; color: var(--danger); }
+.guesslingo-container .btn-stop-rec { padding: 6px 14px; border-radius: 999px; background: var(--danger); color: #fff; font-size: 0.8rem; }
+.guesslingo-container .btn-next { width: 100%; margin-top: 12px; }
+
+.guesslingo-container .spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: gl-spin 0.8s linear infinite; margin: 40px auto 16px; }
+@keyframes gl-spin { to { transform: rotate(360deg); } }
+
+.guesslingo-container .step-section { text-align: center; }
+.guesslingo-container .card { background: var(--card-bg); border-radius: var(--radius); border: 1px solid var(--border); padding: 20px; margin-bottom: 16px; box-shadow: var(--shadow); text-align: left; }
+.guesslingo-container .score-card { text-align: center; }
+.guesslingo-container .score-circle { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--border); margin: 0 auto 8px; }
+.guesslingo-container .score-circle.score-great { border-color: var(--success); }
+.guesslingo-container .score-circle.score-high { border-color: var(--primary); }
+.guesslingo-container .score-circle.score-mid { border-color: var(--warning); }
+.guesslingo-container .score-circle.score-low { border-color: var(--danger); }
+.guesslingo-container .score-number { font-size: 2rem; font-weight: 700; line-height: 1; }
+.guesslingo-container .score-great .score-number { color: var(--success); }
+.guesslingo-container .score-high .score-number { color: var(--primary); }
+.guesslingo-container .score-mid .score-number { color: var(--warning); }
+.guesslingo-container .score-low .score-number { color: var(--danger); }
+.guesslingo-container .score-denom { font-size: 0.85rem; color: var(--text-light); font-weight: 600; }
+.guesslingo-container .score-label { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 16px;}
+
+.guesslingo-container .sub-scores { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+.guesslingo-container .sub-score-row { display: flex; align-items: center; gap: 10px; }
+.guesslingo-container .sub-score-name { font-size: 0.8rem; font-weight: 600; color: var(--text-light); width: 70px; flex-shrink: 0; }
+.guesslingo-container .sub-score-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.guesslingo-container .sub-score-bar { height: 100%; border-radius: 999px; transition: width 0.6s ease; }
+.guesslingo-container .sub-score-bar.score-great { background: var(--success); }
+.guesslingo-container .sub-score-bar.score-high { background: var(--primary); }
+.guesslingo-container .sub-score-bar.score-mid { background: var(--warning); }
+.guesslingo-container .sub-score-bar.score-low { background: var(--danger); }
+.guesslingo-container .sub-score-value { font-size: 0.8rem; font-weight: 700; color: var(--text); width: 24px; text-align: right; }
+
+.guesslingo-container .word-results { margin-bottom: 16px; }
+.guesslingo-container .word-result-row { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 6px; }
+.guesslingo-container .wr-icon { font-size: 1.1rem; flex-shrink: 0; }
+.guesslingo-container .wr-word { flex: 1; font-size: 0.9rem; font-weight: 500; text-align: left; }
+.guesslingo-container .wr-label { font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.3px; }
+.guesslingo-container .wr-first_try { background: #d1fae5; color: #065f46; }
+.guesslingo-container .wr-with_hints { background: #fef3c7; color: #92400e; }
+.guesslingo-container .wr-revealed { background: #fee2e2; color: #991b1b; }
+.guesslingo-container .wr-skipped { background: #f3f4f6; color: #6b7280; }
+
+.guesslingo-container .card-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.guesslingo-container .badge-report { background: var(--primary-light); color: var(--primary-dark); }
+.guesslingo-container .report-fix-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
+.guesslingo-container .rfc-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.guesslingo-container .rfc-fix { background: #fef3c7; color: #92400e; }
+.guesslingo-container .rfc-upgrade { background: #d1fae5; color: #065f46; }
+.guesslingo-container .rfc-title { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.guesslingo-container .rfc-note { font-size: 0.82rem; color: var(--text-light); line-height: 1.5; font-style: italic; }
+
+.guesslingo-container .fix-stacked { margin-bottom: 10px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.guesslingo-container .fix-stacked-row { padding: 10px 14px; }
+.guesslingo-container .fix-stacked-before { background: #fef2f2; border-bottom: 1px solid var(--border); }
+.guesslingo-container .fix-stacked-after { background: #f0fdf4; }
+.guesslingo-container .fix-stacked-label { font-size: 0.7rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; display: block; margin-bottom: 4px; }
+.guesslingo-container .fix-stacked-text { font-size: 0.9rem; line-height: 1.5; color: var(--text); }
+.guesslingo-container .fix-stacked-before .fix-hl { background: #fecaca; border-radius: 3px; padding: 0 2px; }
+.guesslingo-container .fix-stacked-after .fix-hl { background: #bbf7d0; border-radius: 3px; padding: 0 2px; font-weight: 600; }
+
+.guesslingo-container .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
+.guesslingo-container .modal { background: var(--card-bg); border-radius: 16px; padding: 24px; max-width: 400px; width: 100%; text-align: center; position: relative; max-height: 90vh; overflow-y: auto; }
+.guesslingo-container .modal-close { position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+.guesslingo-container .share-type-toggle { display: flex; gap: 8px; justify-content: center; margin-bottom: 14px; }
+.guesslingo-container .btn-share-tab { padding: 8px 18px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; background: var(--card-bg); border: 2px solid var(--border); color: var(--text-light); cursor: pointer; }
+.guesslingo-container .btn-share-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.guesslingo-container .btn-share-tab:disabled { opacity: 0.4; cursor: not-allowed; }
+.guesslingo-container .share-preview-img { width: 100%; border-radius: 8px; border: 1px solid var(--border); }
+.guesslingo-container .share-img-actions { display: flex; gap: 10px; justify-content: center; margin-top: 12px; }
+.guesslingo-container .btn-modal-action { padding: 10px 20px; border-radius: var(--radius); font-size: 0.85rem; font-weight: 600; border: 2px solid var(--border); background: var(--card-bg); color: var(--text); cursor: pointer; }
+.guesslingo-container .btn-modal-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+.guesslingo-container .error-text { color: var(--danger); font-weight: 600; margin-bottom: 16px; }

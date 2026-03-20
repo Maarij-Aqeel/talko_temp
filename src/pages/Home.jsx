@@ -56,6 +56,18 @@ export default function Home() {
           </Link>
         </div>
 
+        {/* GuessLingo Card */}
+        <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>🔮</div>
+          <h2 style={{ marginBottom: '8px' }}>GuessLingo</h2>
+          <p style={{ color: '#666', marginBottom: '24px', flexGrow: 1 }}>
+            Test your English vocabulary & idiom knowledge. Play a daily minigame and get clues from a mysterious AI guide!
+          </p>
+          <Link to="/guesslingo" style={{ textDecoration: 'none' }}>
+            <button className="btn btn-accent" style={{ width: '100%' }}>Launch GuessLingo</button>
+          </Link>
+        </div>
+
       </div>
     </div>
   );

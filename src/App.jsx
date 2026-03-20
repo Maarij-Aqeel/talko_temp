@@ -11,6 +11,7 @@ import Logout from "./pages/Logout"; // Make sure this is imported
 import ProtectedRoute from "./components/ProtectedRoute"; // Import the bouncer
 import DailyPen from "./pages/DailyPen";
 import Tuesday_talko from "./pages/Tuesday_talko";
+import GuessLingo from "./pages/GuessLingo";
 
 export default function App() {
   return (
@@ -36,10 +37,18 @@ export default function App() {
             <Tuesday_talko/>
           </ProtectedRoute>
         }/>
+
         {/* Daily-Pen tool */}
         <Route path="/dailypen" element={
           <ProtectedRoute>
             <DailyPen/>
+          </ProtectedRoute>
+        }/>
+
+        {/* Guess-Lingo tool */}
+        <Route path="/guesslingo" element={
+          <ProtectedRoute>
+            <GuessLingo/>
           </ProtectedRoute>
         }/>
 
