@@ -1,6 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Add this
+import { supabase } from '../supabaseClient'; // Add this
 
 export default function Home() {
+
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    localStorage.clear(); // Nuke the cache
+    navigate('/login'); // Force the redirect safely
+  };
+
   // --- UI State ---
   const [appState, setAppState] = useState('input'); // 'input', 'playback', 'loading', 'feedback', 'error'
   const [errorMessage, setErrorMessage] = useState('');
@@ -197,6 +208,14 @@ export default function Home() {
   return (
     <div className="talko-container">
       
+      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
+        <button 
+          onClick={handleSignOut} 
+          style={{ padding: '8px 16px', backgroundColor: '#ff4d4f', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+        >
+          Sign Out
+        </button>
+      </div>
       {/* --- State 1: Record / Upload Section --- */}
       {appState === 'input' && (
         <section className="record-section">

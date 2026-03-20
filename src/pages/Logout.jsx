@@ -7,17 +7,24 @@ export default function Logout() {
 
   useEffect(() => {
     const performLogout = async () => {
-      // 1. Wait for Supabase to fully destroy the session
-      await supabase.auth.signOut();
-      
-      // 2. ONLY after it is destroyed, flip the state to trigger the redirect
-      setIsLoggedOut(true);
+      try {
+        // 1. Tell the Supabase server to destroy the session
+        await supabase.auth.signOut();
+      } catch (error) {
+        console.error("Logout error:", error);
+      } finally {
+        // 2. Bruteforce clear the browser's local storage just in case
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // 3. Trigger the redirect
+        setIsLoggedOut(true);
+      }
     };
     
     performLogout();
   }, []);
 
-  // Show a quick loading message while Supabase does its job
   if (!isLoggedOut) {
     return (
       <div style={{ textAlign: 'center', marginTop: '100px' }}>
@@ -27,6 +34,5 @@ export default function Logout() {
     );
   }
 
-  // Once the state flips to true, redirect them safely to login
   return <Navigate to="/login" replace />;
 }

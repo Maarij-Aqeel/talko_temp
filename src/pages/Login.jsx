@@ -22,16 +22,25 @@ export default function Login() {
 
       if (functionError) throw functionError;
 
-      // 2. Check the result from Heartbeat
+      // 2. Check if they are in the community AT ALL
       if (!data.isMember) {
         setMessage(
-          "Access Denied: You must be a member of the WordBuddy community to log in.",
+          "Access Denied: We couldn't find your email in the WordBuddy community.",
         );
         setLoading(false);
         return; // Stop the execution here!
       }
 
-      // 3. If they are a member, trigger the Supabase Magic Link
+      // 3. NEW: Check if they have the correct Access Group (Early Bird or Starter)
+      if (!data.hasAccess) {
+        setMessage(
+          "Access Denied: This tool is only available for Early Bird and Starter members. Upgrade your tier in the community to get access!",
+        );
+        setLoading(false);
+        return; 
+      }
+
+      // 4. If they passed both checks, trigger the Supabase Magic Link
       const { error: authError } = await supabase.auth.signInWithOtp({
         email: email,
         options: {
